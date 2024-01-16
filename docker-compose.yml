@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  influxdb-dev:
+    image: influxdb:2.6-alpine
+    env_file:
+      - influx.env
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - ./influxdb2:/var/lib/influxdb2:rw
+    ports:
+      - "8086:8086"
+
+  grafana-dev:
+    image: grafana/grafana:9.3.4
+    env_file:
+      - grafana.env
+    volumes:
+      - ./grafanadb:/var/lib/grafana
+    ports:
+      - 3000:3000
+    user: "1000"
+
+  telegraf-dev:
+    image: telegraf:1.29.2
+    env_file:
+      - telegraf.env
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    ports:
+      - "8094:8094"
