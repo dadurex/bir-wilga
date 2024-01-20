@@ -10,16 +10,21 @@ services:
       - ./config:/etc/influxdb2:rw
     ports:
       - "8087:8086"
+    networks:
+      - wilga-vm-network
 
-  # grafana-dev:
-  #   image: grafana/grafana:9.3.4
-  #   env_file:
-  #     - grafana.env
-  #   volumes:
-  #     - ./grafanadb:/var/lib/grafana
-  #   ports:
-  #     - 3001:3000
-  #   user: "1000"
+  grafana-dev:
+    image: grafana/grafana:9.3.4
+    env_file:
+      - grafana.env
+    volumes:
+      - ./grafana-storage:/var/lib/grafana:rw
+      - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/grafana-datasources.yaml:ro
+    ports:
+      - 3001:3000
+    networks:
+      - wilga-vm-network
+    user: "1000"
 
   telegraf-dev:
     image: telegraf:1.29.2
@@ -29,3 +34,9 @@ services:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
     ports:
       - "8095:8094"
+    networks:
+      - wilga-vm-network
+
+networks:
+  wilga-vm-network:
+    external: true

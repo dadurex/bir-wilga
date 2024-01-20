@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+  - name: Wilga flux
+    type: influxdb
+    access: proxy
+    url: http://influxdb-dev:8086
+    jsonData:
+      version: Flux
+      organization: pw
+      defaultBucket: wilga-bucket
+      tlsSkipVerify: true
+    secureJsonData:
+      token: token
